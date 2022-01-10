@@ -38,7 +38,6 @@ get_remotes_file() {
 get_remotes () {
   remotes_file=$1
 
-  #remotes=$(awk '/url/ { print $3 }' "${remotes_file}")
   remotes=$(awk '/remote/ { gsub(/\[|\]/, ""); print $2 }' "${remotes_file}" | sed 's/"//g')
 
   echo "${remotes}"
@@ -55,7 +54,6 @@ enumerate_remotes() {
 synchronize_remotes() {
   remotes_file=$1
   remotes=$2
-  #number_of_remotes=
   debug=$3
   verbose=$4
   quiet=$5
@@ -64,12 +62,17 @@ synchronize_remotes() {
     echo "synchronize_remotes: number of remotes is ${number_of_remotes}"
   fi
 
-  #for i in $(seq 1 "${number_of_remotes}")
-  #do
-  #  if [ "${debug}" = 1 ]; then
-  #    echo "synchronize_remotes: iterating through remote: ${i}"
-  #  fi
-  #done
+  # Fetch latest from remotes
+
+  if [ "${quiet}" = 1 ]; then
+    git fetch --all &> /dev/null
+    git pull origin master &> /dev/null
+  else
+    git fetch --all
+    git pull origin master
+  fi
+
+  # Push latest to remotes
 
   for remote in $remotes; do
     if [ "${quiet}" = 1 ]; then
@@ -141,7 +144,6 @@ main() {
     echo "main: number of remotes is ${number_of_remotes}"
   fi
 
-  #synchronize_remotes "${remotes_file}" "${remotes}" "${number_of_remotes}" "${debug}" "${verbose}" "${quiet}"
   synchronize_remotes "${remotes_file}" "${remotes}" "${debug}" "${verbose}" "${quiet}"
 }
 
