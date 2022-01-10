@@ -2,6 +2,8 @@
 
 _Remote git repository syncing._
 
+[![Development Status](https://img.shields.io/badge/development--status-pre--alpha-orange?style=flat-square)](https://pypi.org/classifiers)
+
 Git SYN is a command line extension for synchronizing git remote repositories.
 
 ## Compiling
